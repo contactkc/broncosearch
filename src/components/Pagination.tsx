@@ -1,7 +1,7 @@
 interface Props {
   totalPosts: number;
   postsPerPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPage: (page: number) => void;
   currentPage: number;
 }
 

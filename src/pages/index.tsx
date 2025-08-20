@@ -45,15 +45,23 @@ const Home: NextPage = () => {
         }
     };
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     const idxOfLastResult = currentPage * RESULTS_PER_PAGE;
     const idxOfFirstResult = idxOfLastResult - RESULTS_PER_PAGE;
     const currentResults = results.slice(idxOfFirstResult, idxOfLastResult);
 
     return (
         <>
-            <div>
-                <div className="min-h-screen flex items-center justify-center p-4">
-                    <div className="max-w-4xl mx-auto text-center w-full">
+            <div className="min-h-[calc(100vh-3.5rem)]">
+                <div className="flex items-center justify-center pt-32 pb-8">
+                    <div className="max-w-4xl mx-auto text-center w-full px-4">
                         <h1 className="text-4xl">broncosearch</h1>
                         <p className="text-neutral-400 mb-6">discover over 2000+ cpp courses using natural language</p>
 
@@ -74,35 +82,41 @@ const Home: NextPage = () => {
                                 {isLoading ? <Spinner key="ellipsis" variant="ellipsis" /> : 'search'}
                             </button>
                         </form>
-                        <div className="mx-auto mt-6">
-                            {isLoading && <Spinner key="ellipsis" variant="ellipsis" className="mx-auto" size={64} />}
-                            {error && <p className="text-center text-red-500">{error}</p>}
-
-                            {currentResults.length > 0 && (
-                                <div>
-                                    {currentResults.map((course) =>(
-                                        <Card
-                                            key={`${course.subject}-${course.catalog_number}`}
-                                            subject={course.subject}
-                                            catalog_number={course.catalog_number}
-                                            title={course.title}
-                                            description={course.description}
-                                            score={course.score}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-
-                            {results.length > RESULTS_PER_PAGE && (
-                                <Pagination
-                                    totalPosts={results.length}
-                                    postsPerPage={RESULTS_PER_PAGE}
-                                    setCurrentPage={setCurrentPage}
-                                    currentPage={currentPage}
-                                />
-                            )}
-                        </div>
                     </div>
+                </div>
+
+                <div className="max-w-4xl mx-auto px-4 pb-5">
+                    {isLoading && <Spinner key="ellipsis" variant="ellipsis" className="mx-auto" size={64} />}
+                    {error && <p className="text-center text-red-500">{error}</p>}
+
+                    {currentResults.length > 0 && (
+                        <div className="space-y-4">
+                            {currentResults.map((course, index) =>(
+                                <div 
+                                    key={`${course.subject}-${course.catalog_number}`}
+                                    className="animate-fade-in-up"
+                                    style={{ animationDelay: `${index * 0.1}s` }}
+                                >
+                                    <Card
+                                        subject={course.subject}
+                                        catalog_number={course.catalog_number}
+                                        title={course.title}
+                                        description={course.description}
+                                        score={course.score}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {results.length > RESULTS_PER_PAGE && (
+                        <Pagination
+                            totalPosts={results.length}
+                            postsPerPage={RESULTS_PER_PAGE}
+                            setCurrentPage={handlePageChange}
+                            currentPage={currentPage}
+                        />
+                    )}
                 </div>
             </div>
         </>
