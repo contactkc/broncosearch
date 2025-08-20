@@ -4,10 +4,6 @@ import Head from "next/head";
 import { Roboto_Mono } from 'next/font/google'
 import { ThemeProvider } from "next-themes";
 
-const robotoMono = Roboto_Mono({
-  weight: '400',
-  subsets: ['latin']
-})
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -21,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <meta name="description" content="discover cpp courses using natural language" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
-            <div className={robotoMono.className}>
+            <div>
                 <Component {...pageProps} />
             </div>
         </ThemeProvider>

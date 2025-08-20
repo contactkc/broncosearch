@@ -1,6 +1,7 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 body {
-  background-color: #000000;
+  background-color: #060606;
   font-family: 'Roboto Mono';
 }
