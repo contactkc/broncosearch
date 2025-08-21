@@ -3,11 +3,11 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { pipeline } from '@xenova/transformers';
 
 class PipelineSingleton {
-    static task: 'feature-extraction' = 'feature-extraction';
+    static task = 'feature-extraction' as const;
     static model = 'Xenova/all-MiniLM-L6-v2';
-    static instance: any = null;
+    static instance: unknown = null;
 
-    static async getInstance(progress_callback?: Function) {
+    static async getInstance(progress_callback?: (...args: unknown[]) => void) {
         if (this.instance === null) {
             this.instance = await pipeline(this.task, this.model, { progress_callback });
         }
@@ -37,7 +37,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
         const index = pc.Index(indexName);
 
-        const embedder = await PipelineSingleton.getInstance();
+        const embedder = await PipelineSingleton.getInstance() as {
+            (text: string, options?: { pooling: string; normalize: boolean }): Promise<{ data: Float32Array }>;
+        };
         const queryEmbedding = await embedder(query, {
             pooling: 'mean',
             normalize: true,
