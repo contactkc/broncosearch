@@ -5,6 +5,7 @@ import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { ThemeProvider } from "next-themes";
 import { useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/next"
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -47,6 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <Component {...pageProps} />
             </div>
             <Footer />
+            <Analytics />
         </ThemeProvider>
     );
 }
